@@ -8,8 +8,7 @@ use std::time::Duration;
 
 
 pub struct DnsUpdater {
-    pub zone_id: String,
-    pub record_id: String,
+    pub url: String,
     pub token: String,
     pub ip_api: String,
     pub period: u64
@@ -88,10 +87,6 @@ async fn update_dns(url: &str, new_ip: &str, token: &str) -> Result<(), reqwest:
 
 pub async fn dns_updater_thread(param: DnsUpdater) {
     let mut old_ip = String::new();
-    let zone_id = param.zone_id.to_string();
-    let record_id = param.record_id.to_string();
-
-    let cloudflare_api = format!("https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records/{record_id}");
 
     loop {
         // Get current IP
@@ -101,7 +96,7 @@ pub async fn dns_updater_thread(param: DnsUpdater) {
                 if ip.ip != old_ip {
                     println!("Updating DNS from old ip [{}] to [{}]", old_ip, ip.ip);
                     // Update DNS with new ip
-                    if let Err(err) = update_dns(&cloudflare_api, &ip.ip, &param.token).await {
+                    if let Err(err) = update_dns(&param.url, &ip.ip, &param.token).await {
                         eprintln!("Error: {}", err);
                     }
                     else {

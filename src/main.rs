@@ -8,21 +8,20 @@ const INTERVAL_MINUTES: u64 = 1;
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    /// Name of the person to greet
-    #[arg(short, long)]
-    zone_id: String,
 
-    /// Number of times to greet
+    /// API endpoint to update DNS
     #[arg(short, long)]
-    record_id: String,
+    url: String,
 
     /// Bearer token
     #[arg(short, long)]
     token: String,
 
+    /// API endpoint to retreive public IP address
     #[arg(short, long, default_value_t = String::from(GET_IP_URL))]
     ip_api: String,
 
+    /// How often the IP address should be checked in minutes
     #[arg(short, long, default_value_t = INTERVAL_MINUTES)]
     period: u64
 }
@@ -35,8 +34,7 @@ async fn main() {
     let args = Args::parse();
 
     let dns = dns::DnsUpdater {
-        zone_id: args.zone_id,
-        record_id: args.record_id,
+        url: args.url,
         token: args.token,
         ip_api: args.ip_api,
         period: args.period
