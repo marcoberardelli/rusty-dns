@@ -8,7 +8,6 @@ const INTERVAL_MINUTES: u64 = 1;
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-
     /// API endpoint to update DNS
     #[arg(short, long)]
     url: String,
@@ -23,23 +22,19 @@ struct Args {
 
     /// How often the IP address should be checked in minutes
     #[arg(short, long, default_value_t = INTERVAL_MINUTES)]
-    period: u64
+    period: u64,
 }
-
-
 
 #[tokio::main]
 async fn main() {
-
     let args = Args::parse();
 
     let dns = dns::DnsUpdater {
         url: args.url,
         token: args.token,
         ip_api: args.ip_api,
-        period: args.period
+        period: args.period,
     };
-
 
     dns::dns_updater_thread(dns).await;
 }
