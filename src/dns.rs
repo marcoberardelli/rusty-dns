@@ -44,10 +44,15 @@ async fn get_ip(get_ip_api: &str) -> Result<IpResponse, Box<dyn StdError>> {
 
 async fn update_dns(url: &str, new_ip: &str, token: &str) -> Result<(), reqwest::Error> {
     // Custom headers
-    let token_string = format!("Bearer {token}");
-    let bearer_token = token_string.as_str();
+    let mut bearer_token: String = String::from(token);
+
+    if token.contains("Bearer") {
+        bearer_token = format!("Bearer {token}");
+    }
+
+    let bearer_token_str = bearer_token.as_str();
     let headers = vec![
-        ("Authorization", bearer_token),
+        ("Authorization", bearer_token_str),
         ("Content-Type", "application/json"),
     ];
     // Map rappresentation of headers
