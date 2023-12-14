@@ -35,7 +35,7 @@ async fn main() {
 
     let dns = dns::DnsUpdater {
         domain: args.domain,
-        url: args.url,
+        url: args.api_url,
         token: args.token,
         ip_api: args.ip_api,
         period: args.period,

@@ -43,7 +43,12 @@ async fn get_ip(get_ip_api: &str) -> Result<IpResponse, Box<dyn StdError>> {
     serde_json::from_str(&response).map_err(|e| Box::new(e) as Box<dyn StdError>)
 }
 
-async fn update_dns(url: &str, new_ip: &str, token: &str) -> Result<(), reqwest::Error> {
+async fn update_dns(
+    domain: &str,
+    url: &str,
+    new_ip: &str,
+    token: &str,
+) -> Result<(), reqwest::Error> {
     // Custom headers
     let mut bearer_token: String = String::from(token);
 
@@ -70,7 +75,7 @@ async fn update_dns(url: &str, new_ip: &str, token: &str) -> Result<(), reqwest:
     let req = CloudflareRequest {
         record_type: String::from("A"),
         content: String::from(new_ip),
-        name: String::from("berver.eu"),
+        name: String::from(domain),
         proxied: true,
     };
     // Converting CloudflareRequest to json string
@@ -98,9 +103,14 @@ pub async fn dns_updater_thread(param: DnsUpdater) {
             Ok(ip) => {
                 // Compare with old IP
                 if ip.ip != old_ip {
-                    println!("Updating [{}] from old ip [{}] to [{}]", param.domain, old_ip, ip.ip);
+                    println!(
+                        "Updating [{}] from old ip [{}] to [{}]",
+                        param.domain, old_ip, ip.ip
+                    );
                     // Update DNS with new ip
-                    if let Err(err) = update_dns(&param.url, &ip.ip, &param.token).await {
+                    if let Err(err) =
+                        update_dns(&param.domain, &param.url, &ip.ip, &param.token).await
+                    {
                         eprintln!("Error: {}", err);
                     } else {
                         old_ip = ip.ip;
