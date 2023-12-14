@@ -10,14 +10,3 @@ COPY . .
 RUN cargo build --release
 
 CMD [ "./target/release/rusty-dns" ]
-
-#FROM debian:bullseye-slim
-
-
-#RUN apt-get update && apt-get install -y libc6-dev
-
-#WORKDIR /app
-
-#COPY --from=builder /app/target/release/rusty-dns .
-
-#CMD [ "./rusty-dns" ]

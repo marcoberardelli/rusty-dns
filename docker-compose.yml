@@ -1,0 +1,13 @@
+version: '3.8' # Docker Compose version
+services:
+  app:
+    build: . # Building from the local Dockerfile
+    environment:
+      - URL
+      - TOKEN
+    command:
+      [
+        "./target/release/rusty-dns",
+        "--url=${URL}",
+        "--token=${TOKEN}"
+      ]

@@ -8,7 +8,6 @@ const INTERVAL_MINUTES: u64 = 1;
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-
     /// Your domain name
     #[arg(short, long)]
     domain: String,
