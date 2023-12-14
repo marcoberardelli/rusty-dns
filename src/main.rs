@@ -8,9 +8,14 @@ const INTERVAL_MINUTES: u64 = 1;
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
+
+    /// Your domain name
+    #[arg(short, long)]
+    domain: String,
+
     /// API endpoint to update DNS
     #[arg(short, long)]
-    url: String,
+    api_url: String,
 
     /// Bearer token
     #[arg(short, long)]
@@ -30,6 +35,7 @@ async fn main() {
     let args = Args::parse();
 
     let dns = dns::DnsUpdater {
+        domain: args.domain,
         url: args.url,
         token: args.token,
         ip_api: args.ip_api,

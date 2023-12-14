@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use std::time::Duration;
 
 pub struct DnsUpdater {
+    pub domain: String,
     pub url: String,
     pub token: String,
     pub ip_api: String,
@@ -97,7 +98,7 @@ pub async fn dns_updater_thread(param: DnsUpdater) {
             Ok(ip) => {
                 // Compare with old IP
                 if ip.ip != old_ip {
-                    println!("Updating DNS from old ip [{}] to [{}]", old_ip, ip.ip);
+                    println!("Updating [{}] from old ip [{}] to [{}]", param.domain, old_ip, ip.ip);
                     // Update DNS with new ip
                     if let Err(err) = update_dns(&param.url, &ip.ip, &param.token).await {
                         eprintln!("Error: {}", err);
