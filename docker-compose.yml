@@ -8,6 +8,7 @@ services:
     command:
       [
         "./target/release/rusty-dns",
-        "--url=${URL}",
+        #"--domain=${DOMAIN}",
+        "--api-url=${API_URL}",
         "--token=${TOKEN}"
       ]

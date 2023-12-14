@@ -19,11 +19,7 @@ $ ```rusty-dns --url youtDnsProviderEndpoint --token yourBearerToken```
 
 ### Default values
 
-| Arg    | Value                            |
-|--------|----------------------------------|
-| ip-api | http://api.ipify.org?format=json |
-| period | 1                                |
-
-
-## TODO
-- Dockerfile
+```
+--ip-api=http://api.ipify.org?format=json,
+--period=1
+```
